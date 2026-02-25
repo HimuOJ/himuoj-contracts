@@ -1,0 +1,9 @@
+<Solution>
+  <Folder Name="/csharp-refit/">
+    <Project Path="csharp-refit/HimuOJ.Contracts.Refit/HimuOJ.Contracts.Refit.csproj" />
+  </Folder>
+  <Folder Name="/events/" />
+  <Folder Name="/events/csharp/">
+    <Project Path="events/csharp/HimuOJ.Contracts.Events/HimuOJ.Contracts.Events.csproj" />
+  </Folder>
+</Solution>

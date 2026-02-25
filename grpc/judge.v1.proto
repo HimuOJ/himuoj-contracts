@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package himuoj.judge.v1;
+
+option csharp_namespace = "HimuOJ.Contracts.Grpc.Judge.V1";
+
+service JudgePingService {
+  rpc Ping (PingRequest) returns (PingReply);
+}
+
+message PingRequest {
+  string request_id = 1;
+}
+
+message PingReply {
+  string message = 1;
+  int64 server_unix_time = 2;
+}

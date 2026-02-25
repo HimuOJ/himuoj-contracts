@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://himuoj.dev/contracts/events/submission-created.event.v1.schema.json",
+  "title": "SubmissionCreatedEvent",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "eventId",
+    "submissionId",
+    "problemId",
+    "userId",
+    "language",
+    "sourceCodePath",
+    "createdAt"
+  ],
+  "properties": {
+    "eventId": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "submissionId": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "problemId": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "userId": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "language": {
+      "type": "string",
+      "minLength": 1,
+      "examples": ["cpp17", "csharp", "python3"]
+    },
+    "sourceCodePath": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Object storage path to source code payload"
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time"
+    }
+  }
+}
