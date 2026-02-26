@@ -1,33 +1,9 @@
 openapi: 3.0.3
 info:
   title: HimuOJ BFF Contracts
-  version: 1.0.0
-  description: Minimal HelloWorld contract for SPA/BFF integration.
-paths:
-  /api/v1/hello:
-    get:
-      tags:
-        - System
-      summary: Get hello message
-      operationId: GetHello
-      responses:
-        '200':
-          description: Hello payload
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HelloResponse'
-components:
-  schemas:
-    HelloResponse:
-      type: object
-      required:
-        - message
-        - timestamp
-      properties:
-        message:
-          type: string
-          example: Hello from HimuOJ contracts
-        timestamp:
-          type: string
-          format: date-time
+  version: 2.0.0
+  description: BFF aggregate root API index. Aggregate endpoints are split by root YAML files.
+paths: {}
+x-aggregate-root-contracts:
+  - openapi/problems.v1.yaml
+  - openapi/submissions.v1.yaml
