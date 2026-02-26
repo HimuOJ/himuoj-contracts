@@ -3,3 +3,5 @@ agents.md
 **/bin/
 **/obj/
 
+.mcp.json
+opencode.json
