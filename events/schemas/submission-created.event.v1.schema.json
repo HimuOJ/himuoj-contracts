@@ -19,16 +19,13 @@
       "format": "uuid"
     },
     "submissionId": {
-      "type": "string",
-      "format": "uuid"
+      "type": "integer"
     },
     "problemId": {
-      "type": "string",
-      "format": "uuid"
+      "type": "integer"
     },
     "userId": {
-      "type": "string",
-      "format": "uuid"
+      "type": "integer"
     },
     "language": {
       "type": "string",
