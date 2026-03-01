@@ -10,7 +10,7 @@
     "problemId",
     "userId",
     "language",
-    "sourceCodePath",
+    "codeUploadId",
     "createdAt"
   ],
   "properties": {
@@ -32,10 +32,10 @@
       "minLength": 1,
       "examples": ["cpp17", "csharp", "python3"]
     },
-    "sourceCodePath": {
+    "codeUploadId": {
       "type": "string",
       "minLength": 1,
-      "description": "Object storage path to source code payload"
+      "description": "Upload session identifier for source code payload"
     },
     "createdAt": {
       "type": "string",

@@ -1,0 +1,375 @@
+openapi: 3.0.3
+info:
+  title: HimuOJ Objects Aggregate Contracts
+  version: 1.0.0
+  description: REST contracts for controlled object upload and download flows.
+  license:
+    name: Proprietary
+    url: https://himuoj.com/license
+servers:
+  - url: https://api.himuoj.local
+    description: Placeholder base URL for contract validation.
+tags:
+  - name: Objects
+    description: Object upload sessions and controlled download access.
+paths:
+  /api/v1/objects/uploads:
+    post:
+      tags:
+        - Objects
+      summary: Create object upload session
+      operationId: CreateObjectUpload
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateObjectUploadRequest'
+      responses:
+        '201':
+          description: Upload session created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectUploadDetail'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /api/v1/objects/uploads/{uploadId}:
+    get:
+      tags:
+        - Objects
+      summary: Get object upload status
+      operationId: GetObjectUploadById
+      security:
+        - BearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/UploadId'
+      responses:
+        '200':
+          description: Upload session detail.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectUploadDetail'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /api/v1/objects/uploads/{uploadId}/complete:
+    post:
+      tags:
+        - Objects
+      summary: Complete object upload
+      operationId: CompleteObjectUpload
+      security:
+        - BearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/UploadId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CompleteObjectUploadRequest'
+      responses:
+        '200':
+          description: Upload marked as completed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectUploadDetail'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /api/v1/objects/uploads/{uploadId}/download-url:
+    post:
+      tags:
+        - Objects
+      summary: Create short-lived download URL
+      operationId: CreateObjectDownloadUrl
+      security:
+        - BearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/UploadId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateObjectDownloadUrlRequest'
+      responses:
+        '200':
+          description: Download URL created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectDownloadUrlResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  parameters:
+    UploadId:
+      name: uploadId
+      in: path
+      required: true
+      description: Upload session identifier.
+      schema:
+        type: string
+        minLength: 1
+        maxLength: 128
+  responses:
+    BadRequest:
+      description: The request payload or parameters are invalid.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+    Unauthorized:
+      description: Authentication is required.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+    Forbidden:
+      description: The current principal has no permission.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+    NotFound:
+      description: The requested resource does not exist.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+    Conflict:
+      description: The request conflicts with current state.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+    InternalServerError:
+      description: Unexpected server-side error.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+  schemas:
+    ObjectPurpose:
+      type: string
+      enum:
+        - problem.description
+        - problem.testcase.input
+        - problem.testcase.output
+        - submission.source-code
+        - judge.actual-output
+    ObjectPolicy:
+      type: string
+      enum:
+        - problem-public-read
+        - problem-admin-only
+        - submission-owner-private
+        - judge-internal
+    ObjectUploadStatus:
+      type: string
+      enum:
+        - Initiated
+        - Uploaded
+        - Completed
+        - Expired
+        - Cancelled
+    CreateObjectUploadRequest:
+      type: object
+      additionalProperties: false
+      required:
+        - purpose
+        - policy
+        - fileName
+        - contentType
+        - contentLength
+      properties:
+        purpose:
+          $ref: '#/components/schemas/ObjectPurpose'
+        policy:
+          $ref: '#/components/schemas/ObjectPolicy'
+        fileName:
+          type: string
+          minLength: 1
+          maxLength: 512
+        contentType:
+          type: string
+          minLength: 1
+          maxLength: 256
+        contentLength:
+          type: integer
+          format: int64
+          minimum: 1
+    UploadTransport:
+      type: object
+      required:
+        - method
+      properties:
+        method:
+          type: string
+          enum:
+            - PresignedPut
+            - FormPost
+            - ProxyUpload
+        uploadUrl:
+          type: string
+          format: uri
+          nullable: true
+        headers:
+          type: object
+          nullable: true
+          additionalProperties:
+            type: string
+        formFields:
+          type: object
+          nullable: true
+          additionalProperties:
+            type: string
+        expiresAt:
+          type: string
+          format: date-time
+          nullable: true
+    CompleteObjectUploadRequest:
+      type: object
+      additionalProperties: false
+      properties:
+        sha256:
+          type: string
+          nullable: true
+          pattern: '^[A-Fa-f0-9]{64}$'
+    ObjectUploadDetail:
+      type: object
+      required:
+        - uploadId
+        - purpose
+        - policy
+        - fileName
+        - contentType
+        - contentLength
+        - status
+        - createdAt
+      properties:
+        uploadId:
+          type: string
+          minLength: 1
+          maxLength: 128
+        purpose:
+          $ref: '#/components/schemas/ObjectPurpose'
+        policy:
+          $ref: '#/components/schemas/ObjectPolicy'
+        fileName:
+          type: string
+          minLength: 1
+          maxLength: 512
+        contentType:
+          type: string
+          minLength: 1
+          maxLength: 256
+        contentLength:
+          type: integer
+          format: int64
+          minimum: 1
+        status:
+          $ref: '#/components/schemas/ObjectUploadStatus'
+        sha256:
+          type: string
+          nullable: true
+          pattern: '^[A-Fa-f0-9]{64}$'
+        objectKey:
+          type: string
+          nullable: true
+          maxLength: 1024
+        upload:
+          $ref: '#/components/schemas/UploadTransport'
+        createdAt:
+          type: string
+          format: date-time
+        completedAt:
+          type: string
+          format: date-time
+          nullable: true
+        expiresAt:
+          type: string
+          format: date-time
+          nullable: true
+    CreateObjectDownloadUrlRequest:
+      type: object
+      additionalProperties: false
+      properties:
+        ttlSeconds:
+          type: integer
+          minimum: 1
+          maximum: 3600
+          default: 300
+    ObjectDownloadUrlResponse:
+      type: object
+      required:
+        - downloadUrl
+        - expiresAt
+      properties:
+        downloadUrl:
+          type: string
+          format: uri
+        expiresAt:
+          type: string
+          format: date-time
+    ProblemDetails:
+      type: object
+      required:
+        - title
+        - status
+      properties:
+        type:
+          type: string
+          format: uri
+          nullable: true
+        title:
+          type: string
+        status:
+          type: integer
+        detail:
+          type: string
+          nullable: true
+        instance:
+          type: string
+          nullable: true
