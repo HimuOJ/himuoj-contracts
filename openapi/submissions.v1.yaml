@@ -1,10 +1,17 @@
 openapi: 3.0.3
 info:
   title: HimuOJ Submissions Aggregate Contracts
-  version: 1.0.0
+  version: 2.0.0
   description: REST contracts for Submission aggregate root and TestCaseResults entity.
+  license:
+    name: Proprietary
+    url: https://himuoj.com/license
+servers:
+  - url: https://api.himuoj.local
+    description: Placeholder base URL for contract validation.
 tags:
   - name: Submissions
+    description: Submission aggregate root operations.
 paths:
   /api/v1/submissions:
     get:
@@ -261,9 +268,9 @@ components:
         - $ref: '#/components/schemas/SubmissionSummary'
         - type: object
           required:
-            - codeObjectKey
+            - codeUploadId
           properties:
-            codeObjectKey:
+            codeUploadId:
               type: string
               minLength: 1
               maxLength: 1024
@@ -273,7 +280,7 @@ components:
       required:
         - problemId
         - language
-        - codeObjectKey
+        - codeUploadId
       properties:
         problemId:
           type: integer
@@ -284,7 +291,7 @@ components:
           minLength: 1
           maxLength: 32
           example: cpp17
-        codeObjectKey:
+        codeUploadId:
           type: string
           minLength: 1
           maxLength: 1024
@@ -326,7 +333,7 @@ components:
         memoryConsumedKb:
           type: integer
           minimum: 0
-        actualOutputObjectKey:
+        actualOutputUploadId:
           type: string
           nullable: true
           maxLength: 1024

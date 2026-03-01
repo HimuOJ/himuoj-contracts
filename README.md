@@ -25,6 +25,7 @@
 按聚合根拆分 OpenAPI 文件：
 
 - `openapi/himuoj-bff.v1.yaml`：BFF 聚合根 API 索引（当前不承载具体业务路径）。
+- `openapi/objects.v1.yaml`：`Objects` 聚合根（受控上传与下载访问）。
 - `openapi/problems.v1.yaml`：`Problems` 聚合根（含 `TestCases`）。
 - `openapi/submissions.v1.yaml`：`Submissions` 聚合根（含 `TestCaseResults`）。
 
@@ -37,6 +38,7 @@ himuoj-contracts/
 ├── events/
 │   ├── schemas/
 │   └── csharp/
+├── docs/
 └── csharp-refit/
 ```
 

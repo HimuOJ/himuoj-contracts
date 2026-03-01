@@ -22,13 +22,13 @@ public sealed record SubmissionDetail(
     [property: System.Text.Json.Serialization.JsonPropertyName("maxTimeConsumedMs")] int MaxTimeConsumedMs,
     [property: System.Text.Json.Serialization.JsonPropertyName("maxMemoryConsumedKb")] int MaxMemoryConsumedKb,
     [property: System.Text.Json.Serialization.JsonPropertyName("submittedAt")] DateTimeOffset SubmittedAt,
-    [property: System.Text.Json.Serialization.JsonPropertyName("codeObjectKey")] string CodeObjectKey
+    [property: System.Text.Json.Serialization.JsonPropertyName("codeUploadId")] string CodeUploadId
 );
 
 public sealed record CreateSubmissionRequest(
     [property: System.Text.Json.Serialization.JsonPropertyName("problemId")] long ProblemId,
     [property: System.Text.Json.Serialization.JsonPropertyName("language")] string Language,
-    [property: System.Text.Json.Serialization.JsonPropertyName("codeObjectKey")] string CodeObjectKey
+    [property: System.Text.Json.Serialization.JsonPropertyName("codeUploadId")] string CodeUploadId
 );
 
 public sealed record SubmissionAcceptedResponse(
@@ -48,7 +48,7 @@ public sealed record TestCaseResultDetail(
     [property: System.Text.Json.Serialization.JsonPropertyName("status")] JudgeStatus Status,
     [property: System.Text.Json.Serialization.JsonPropertyName("timeConsumedMs")] int TimeConsumedMs,
     [property: System.Text.Json.Serialization.JsonPropertyName("memoryConsumedKb")] int MemoryConsumedKb,
-    [property: System.Text.Json.Serialization.JsonPropertyName("actualOutputObjectKey")] string? ActualOutputObjectKey,
+    [property: System.Text.Json.Serialization.JsonPropertyName("actualOutputUploadId")] string? ActualOutputUploadId,
     [property: System.Text.Json.Serialization.JsonPropertyName("errorMessage")] string? ErrorMessage
 );
 

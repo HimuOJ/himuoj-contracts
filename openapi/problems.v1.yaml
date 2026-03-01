@@ -1,11 +1,20 @@
 openapi: 3.0.3
 info:
   title: HimuOJ Problems Aggregate Contracts
-  version: 1.0.0
+  version: 2.0.0
   description: REST contracts for Problem aggregate root and TestCases entity.
+  license:
+    name: Proprietary
+    url: https://himuoj.com/license
+servers:
+  - url: https://api.himuoj.local
+    description: Placeholder base URL for contract validation.
+security: []
 tags:
   - name: Problems
+    description: Problem aggregate root operations.
   - name: TestCases
+    description: Test case entity operations under a problem.
 paths:
   /api/v1/problems:
     get:
@@ -354,9 +363,9 @@ components:
         - $ref: '#/components/schemas/ProblemSummary'
         - type: object
           required:
-            - descriptionObjectId
+            - descriptionUploadId
           properties:
-            descriptionObjectId:
+            descriptionUploadId:
               type: string
               minLength: 1
               maxLength: 1024
@@ -365,7 +374,7 @@ components:
       additionalProperties: false
       required:
         - title
-        - descriptionObjectId
+        - descriptionUploadId
         - timeLimitMs
         - memoryLimitKb
       properties:
@@ -373,7 +382,7 @@ components:
           type: string
           minLength: 1
           maxLength: 256
-        descriptionObjectId:
+        descriptionUploadId:
           type: string
           minLength: 1
           maxLength: 1024
@@ -392,7 +401,7 @@ components:
           type: string
           minLength: 1
           maxLength: 256
-        descriptionObjectId:
+        descriptionUploadId:
           type: string
           minLength: 1
           maxLength: 1024
@@ -407,8 +416,8 @@ components:
       required:
         - id
         - problemId
-        - inputObjectKey
-        - expectedOutputObjectKey
+        - inputUploadId
+        - expectedOutputUploadId
         - scoreWeight
         - isHidden
       properties:
@@ -418,11 +427,11 @@ components:
         problemId:
           type: integer
           format: int64
-        inputObjectKey:
+        inputUploadId:
           type: string
           minLength: 1
           maxLength: 1024
-        expectedOutputObjectKey:
+        expectedOutputUploadId:
           type: string
           minLength: 1
           maxLength: 1024
@@ -435,16 +444,16 @@ components:
       type: object
       additionalProperties: false
       required:
-        - inputObjectKey
-        - expectedOutputObjectKey
+        - inputUploadId
+        - expectedOutputUploadId
         - scoreWeight
         - isHidden
       properties:
-        inputObjectKey:
+        inputUploadId:
           type: string
           minLength: 1
           maxLength: 1024
-        expectedOutputObjectKey:
+        expectedOutputUploadId:
           type: string
           minLength: 1
           maxLength: 1024
@@ -458,11 +467,11 @@ components:
       additionalProperties: false
       minProperties: 1
       properties:
-        inputObjectKey:
+        inputUploadId:
           type: string
           minLength: 1
           maxLength: 1024
-        expectedOutputObjectKey:
+        expectedOutputUploadId:
           type: string
           minLength: 1
           maxLength: 1024
